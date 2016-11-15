@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+    </head>
+    <body>
+  <div id=test></div>
+  <div id="grid">
+    <div id=sq0  onclick="clickgrid( 0)"></div>
+    <div id=sq1  onclick="clickgrid( 1)"></div>
+    <div id=sq2  onclick="clickgrid( 2)"></div>
+    <div id=sq3  onclick="clickgrid( 3)"></div>
+    <div id=sq4  onclick="clickgrid( 4)"></div>
+    <div id=sq5  onclick="clickgrid( 5)"></div>
+    <div id=sq6  onclick="clickgrid( 6)"></div>
+    <div id=sq7  onclick="clickgrid( 7)"></div>
+    <div id=sq8  onclick="clickgrid( 8)"></div>
+    <div id=sq9  onclick="clickgrid( 9)"></div>
+    <div id=sq10 onclick="clickgrid(10)"></div>
+    <div id=sq11 onclick="clickgrid(11)"></div>
+    <div id=sq12 onclick="clickgrid(12)"></div>
+    <div id=sq13 onclick="clickgrid(13)"></div>
+    <div id=sq14 onclick="clickgrid(14)"></div>
+  </div>
+  <style>
+  div[id^=sq] {
+  position: absolute;
+  margin: 0;
+  background-image: url("https://s-media-cache-ak0.pinimg.com/736x/30/a4/69/30a469be3e7ddc15abc0c6048c1a6cf6.jpg");
+  min-height: 100px;
+  min-width: 100px;
+  border: 2px solid #000000;
+}
+#grid {
+  position: relative;
+}
+  </style>
+  <script>
+   var count = 0
+    bg_inc = Math.min(screen.width, screen.height) / 4 - 10
+    gd_inc = bg_inc + 2
+    var empty = 15;
+        
+    // array for holding picture fragment indexes
+    var pic=[]
+    for (i = 0; i < 15; i++) {
+      pic[i] = i;
+    }
+    for (i = 0; i < 200; i++) {
+      r = Math.floor((Math.random() * 15));
+      move(r)
+    }
+    for (i = 0; i < 15; i++) {
+      s = document.getElementById("sq" + i).style
+      var bx = i % 4
+      var by = Math.floor(i/4)
+      var x = pic[i] % 4
+      var y = Math.floor(pic[i]/4)
+      s.backgroundPosition = (-bg_inc * bx - 0) + "px " + (-bg_inc * by + 0) + "px"
+      s.left = (x * gd_inc) + "px"
+      s.top  = (y * gd_inc) + "px"
+      s.minWidth  = bg_inc + "px"
+      s.minHeight = bg_inc + "px"
+    }
+
+    function move(x) {
+      save = pic[x]
+      if ((pic[x] - 4) == empty) {
+        pic[x] -= 4
+      } else if ((pic[x] + 4) == empty) {
+        pic[x] += 4
+      } else if (((pic[x] - 1) == empty) && (pic[x] % 4 > 0)) {
+        pic[x] -= 1
+      } else if (((pic[x] + 1) == empty) && (pic[x] % 4 < 3)){
+        pic[x] += 1
+      } else {
+         return 
+      }
+      empty = save
+    }
+   
+    function clickgrid(x) {
+      count++
+      s = document.getElementById("sq" + x).style
+      if ((pic[x] - 4) == empty) {
+        s.top = (parseInt(s.top, 10) - gd_inc) + "px"
+      } else if ((pic[x] + 4) == empty) {
+        s.top = (parseInt(s.top, 10) + gd_inc) + "px"
+      } else if (((pic[x] - 1) == empty) && (pic[x] % 4 > 0)) {
+        s.left = (parseInt(s.left, 10) - gd_inc) + "px"
+      } else if (((pic[x] + 1) == empty) && (pic[x] % 4 < 3)){
+        s.left = (parseInt(s.left, 10) + gd_inc) + "px"
+      }
+      move(x)
+      for (i = 0; i < 15; i++) {
+        if (pic[i] != i)
+          return
+      }
+      alert("Congratulations!\nYou have solved this after " + count + " turns")
+    }
+  </script>
+</html>
